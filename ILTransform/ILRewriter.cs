@@ -660,6 +660,13 @@ namespace ILTransform
                     }
                 }
 
+                if (_settings.ReplaceTestLibrary)
+                {
+                    if (line.Contains(""))
+                    {
+                    }
+                }
+
                 /*
                 const string testKindTag = "<CLRTestKind>BuildAndRun</CLRTestKind>";
                 int testKindIndex = line.IndexOf(testKindTag);

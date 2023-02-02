@@ -22,6 +22,7 @@ namespace ILTransform
         public bool CleanupILAssembly;
         public bool CleanupILSystemRuntimeReference;
         public bool GenerateWrappers;
+        public bool ReplaceTestLibrary;
     }
 
     public class Program
@@ -97,6 +98,10 @@ namespace ILTransform
                         {
                             settings.GenerateWrappers = true;
                         }
+                        else if (arg == "-replace-test-library")
+                        {
+                            settings.ReplaceTestLibrary = true;
+                        }
                         else
                         {
                             throw new Exception(string.Format("Unsupported option '{0}'", arg));
@@ -119,7 +124,8 @@ namespace ILTransform
                         || settings.CleanupILModule
                         || settings.CleanupILAssembly
                         || settings.CleanupILSystemRuntimeReference
-                        || settings.GenerateWrappers))
+                        || settings.GenerateWrappers
+                        || settings.ReplaceTestLibrary))
                 {
                     throw new Exception("-p is not compatible with other rewriting options");
                 }
@@ -161,6 +167,11 @@ namespace ILTransform
                 else if (settings.DeduplicateProjectNames)
                 {
                     testStore.FixILFilesWithProjectNames();
+                }
+
+                if (settings.ReplaceTestLibrary)
+                {
+                    testStore.ReplaceLibraryOnILProjs();
                 }
 
                 if (!settings.UnifyDbgRelProjects)
